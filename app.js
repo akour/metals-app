@@ -1,4 +1,4 @@
-// Metals Planner logic new
+// Metals Planner logic
 // Manual dark/light toggle (option B)
 
 const baseConfig = {
