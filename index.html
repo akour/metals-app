@@ -1,45 +1,730 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Metals</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="manifest" href="manifest.json" />
-<style>
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
-:root {
-  --bg: #111;
-  --text: #eee;
-}
-.light {
-  --bg: #f8f8f8;
-  --text: #222;
-}
-button {
-  padding: 10px 16px;
-  margin: 20px;
-  border-radius: 8px;
-  border: none;
-  background: #fbbf24;
-  font-weight: bold;
-}
-</style>
+  <meta charset="UTF-8" />
+  <title>Metals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#050816" />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0b1020;
+      --card: #111827;
+      --accent: #fbbf24;
+      --accent-soft: rgba(251, 191, 36, 0.12);
+      --accent-red: #fb7185;
+      --accent-green: #4ade80;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    body.light {
+      --bg: #f3f4f6;
+      --bg-soft: #ffffff;
+      --card: #ffffff;
+      --accent: #f59e0b;
+      --accent-soft: rgba(245, 158, 11, 0.08);
+      --accent-red: #dc2626;
+      --accent-green: #16a34a;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827, #020617 60%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    body.light {
+      background: radial-gradient(circle at top, #e5e7eb, #f9fafb 60%);
+    }
+
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px 16px 40px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fbbf24, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+      font-size: 18px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 0;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .pill {
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px 10px;
+      font-size: 11px;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    body.light .pill {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+    }
+
+    .header-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 0;
+      padding: 6px 11px;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .btn span.icon {
+      font-size: 13px;
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, #fbbf24, #fb923c);
+      color: #111827;
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.35);
+    }
+
+    body.light .btn {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border);
+    }
+
+    body.light .btn-accent {
+      border: none;
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), #020617);
+      border-radius: 18px;
+      padding: 14px 14px 10px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      margin-bottom: 14px;
+    }
+
+    body.light .card {
+      background: var(--card);
+      border-color: var(--border);
+    }
+
+    .portfolio {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .portfolio-title {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .portfolio-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .portfolio-row {
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .label {
+      color: var(--muted);
+      width: 80px;
+    }
+
+    .value-strong {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .value-green {
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .value-red {
+      color: var(--accent-red);
+      font-weight: 600;
+    }
+
+    .mode-toggle {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 999px;
+      padding: 3px;
+      display: inline-flex;
+      gap: 3px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    body.light .mode-toggle {
+      background: rgba(249, 250, 251, 0.98);
+    }
+
+    .mode-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 4px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      color: var(--muted);
+      background: transparent;
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      color: #111827;
+      font-weight: 600;
+      box-shadow: 0 6px 14px rgba(251, 191, 36, 0.4);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      margin-top: 4px;
+    }
+
+    .tab {
+      flex: 1;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      text-align: center;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #111827;
+      border-color: transparent;
+      box-shadow: 0 8px 18px rgba(251, 191, 36, 0.45);
+      font-weight: 600;
+    }
+
+    body.light .tab {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: var(--border);
+    }
+
+    .asset-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .asset-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .asset-title span.badge {
+      font-size: 11px;
+      border-radius: 999px;
+      padding: 2px 8px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+    }
+
+    body.light .asset-title span.badge {
+      background: rgba(243, 244, 246, 0.95);
+      border: 1px solid var(--border);
+    }
+
+    .small-label {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .field {
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 12px;
+      padding: 8px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 11px;
+    }
+
+    body.light .field {
+      background: rgba(255, 255, 255, 0.98);
+      border-color: var(--border);
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--muted);
+    }
+
+    .field input {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      outline: none;
+    }
+
+    body.light .field input {
+      color: var(--text);
+    }
+
+    .position {
+      margin-bottom: 8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px dashed rgba(148, 163, 184, 0.5);
+      font-size: 11px;
+    }
+
+    body.light .position {
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .position-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11px;
+      background: var(--accent-soft);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .status-dot.hold {
+      background: #fbbf24;
+    }
+
+    .status-dot.buy {
+      background: #22c55e;
+    }
+
+    .status-dot.sell {
+      background: #fb7185;
+    }
+
+    .section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin: 10px 2px 4px;
+    }
+
+    .move-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .badge-soft {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    body.light .badge-soft {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border);
+    }
+
+    .move-status {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .move-status strong {
+      color: var(--text);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
+    .table th,
+    .table td {
+      padding: 4px 4px;
+      text-align: right;
+    }
+
+    .table th:first-child,
+    .table td:first-child {
+      text-align: left;
+    }
+
+    .table thead {
+      color: var(--muted);
+    }
+
+    .table tbody tr {
+      border-top: 1px solid rgba(15, 23, 42, 0.6);
+    }
+
+    body.light .table tbody tr {
+      border-top-color: var(--border);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--muted);
+    }
+
+    .footer-note {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+  </style>
 </head>
 <body>
-<button id="themeToggle">Toggle Dark/Light</button>
-<h1>Metals App</h1>
-<p>Your PWA shell is ready. We’ll plug in the full planner next.</p>
+  <div class="app">
+    <header class="header">
+      <div class="title-wrap">
+        <div class="logo">₥</div>
+        <div>
+          <h1>Metals</h1>
+          <div class="subtitle">XAU / XAG planner & trim helper</div>
+        </div>
+      </div>
+      <div class="header-buttons">
+        <div class="pill">
+          <span class="dot"></span>
+          <span>Local • On device</span>
+        </div>
+        <button id="themeToggle" class="btn">
+          <span class="icon">🌓</span>
+          <span>Dark / Light</span>
+        </button>
+      </div>
+    </header>
 
-<script src="app.js"></script>
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
+    <section class="card" id="portfolioCard">
+      <div class="portfolio">
+        <div class="portfolio-main">
+          <div class="portfolio-title">Portfolio</div>
+          <div class="portfolio-row">
+            <div class="label">Total value</div>
+            <div class="value-strong" id="pfTotalValue">—</div>
+          </div>
+          <div class="portfolio-row">
+            <div class="label">Total cost</div>
+            <div id="pfTotalCost">—</div>
+          </div>
+          <div class="portfolio-row">
+            <div class="label">Total P/L</div>
+            <div id="pfTotalPL" class="value-green">—</div>
+          </div>
+        </div>
+        <div class="mode-toggle" id="modeToggle">
+          <button class="mode-btn active" data-mode="cons">Cons.</button>
+          <button class="mode-btn" data-mode="aggro">Aggro</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="tabs">
+        <button class="tab active" data-asset="gold">Gold (XAU)</button>
+        <button class="tab" data-asset="silver">Silver (XAG)</button>
+      </div>
+
+      <!-- GOLD PANEL -->
+      <div class="asset-panel" id="goldPanel">
+        <div class="asset-header">
+          <div class="asset-title">
+            <span>Gold</span>
+            <span class="badge">Ahmed strategy</span>
+          </div>
+          <div class="small-label" id="goldModeLabel">Mode: Cons.</div>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label>Holdings (oz)</label>
+            <input id="goldHold" type="number" step="0.001" />
+          </div>
+          <div class="field">
+            <label>Avg buy (JOD/oz)</label>
+            <input id="goldAvg" type="number" step="0.01" />
+          </div>
+          <div class="field">
+            <label>Current price (JOD/oz)</label>
+            <input id="goldPrice" type="number" step="0.1" />
+          </div>
+          <div class="field">
+            <label>Current value (JOD)</label>
+            <input id="goldValue" type="number" step="0.1" readonly />
+          </div>
+        </div>
+
+        <div class="position">
+          <div class="position-row">
+            <span>Cost</span>
+            <span id="goldCost">—</span>
+          </div>
+          <div class="position-row">
+            <span>P/L</span>
+            <span id="goldPL" class="value-green">—</span>
+          </div>
+          <div class="position-row">
+            <span>P/L %</span>
+            <span id="goldPLPct" class="value-green">—</span>
+          </div>
+          <div class="position-row">
+            <span>Status</span>
+            <span id="goldStatus" class="status-pill">
+              <span class="status-dot hold"></span>
+              <span>HOLD – between buy & trims</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="section-title">24h move check</div>
+        <div class="move-grid">
+          <div class="field">
+            <label>Yesterday price (JOD/oz)</label>
+            <input id="goldPrev" type="number" step="0.1" />
+          </div>
+          <div class="field">
+            <label>24h change %</label>
+            <input id="goldMove" type="text" readonly />
+          </div>
+        </div>
+        <div class="move-status" id="goldMoveStatus">
+          Big move status: <strong>—</strong>
+        </div>
+
+        <div class="section-title">Trim ladder</div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Level</th>
+              <th>Sell %</th>
+              <th>Qty (oz)</th>
+              <th>Profit</th>
+            </tr>
+          </thead>
+          <tbody id="goldTrimBody"></tbody>
+        </table>
+        <div class="chip-row">
+          <span class="chip">Stronger trims in Aggro mode</span>
+          <span class="chip">Manual orders in bank app</span>
+        </div>
+      </div>
+
+      <!-- SILVER PANEL -->
+      <div class="asset-panel" id="silverPanel" style="display:none">
+        <div class="asset-header">
+          <div class="asset-title">
+            <span>Silver</span>
+            <span class="badge">Ahmed strategy</span>
+          </div>
+          <div class="small-label" id="silverModeLabel">Mode: Cons.</div>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label>Holdings (oz)</label>
+            <input id="silverHold" type="number" step="0.01" />
+          </div>
+          <div class="field">
+            <label>Avg buy (JOD/oz)</label>
+            <input id="silverAvg" type="number" step="0.01" />
+          </div>
+          <div class="field">
+            <label>Current price (JOD/oz)</label>
+            <input id="silverPrice" type="number" step="0.01" />
+          </div>
+          <div class="field">
+            <label>Current value (JOD)</label>
+            <input id="silverValue" type="number" step="0.1" readonly />
+          </div>
+        </div>
+
+        <div class="position">
+          <div class="position-row">
+            <span>Cost</span>
+            <span id="silverCost">—</span>
+          </div>
+          <div class="position-row">
+            <span>P/L</span>
+            <span id="silverPL" class="value-green">—</span>
+          </div>
+          <div class="position-row">
+            <span>P/L %</span>
+            <span id="silverPLPct" class="value-green">—</span>
+          </div>
+          <div class="position-row">
+            <span>Status</span>
+            <span id="silverStatus" class="status-pill">
+              <span class="status-dot hold"></span>
+              <span>HOLD – between buy & trims</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="section-title">24h move check</div>
+        <div class="move-grid">
+          <div class="field">
+            <label>Yesterday price (JOD/oz)</label>
+            <input id="silverPrev" type="number" step="0.1" />
+          </div>
+          <div class="field">
+            <label>24h change %</label>
+            <input id="silverMove" type="text" readonly />
+          </div>
+        </div>
+        <div class="move-status" id="silverMoveStatus">
+          Big move status: <strong>—</strong>
+        </div>
+
+        <div class="section-title">Trim ladder</div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Level</th>
+              <th>Sell %</th>
+              <th>Qty (oz)</th>
+              <th>Profit</th>
+            </tr>
+          </thead>
+          <tbody id="silverTrimBody"></tbody>
+        </table>
+        <div class="chip-row">
+          <span class="chip">Bigger trims at lower levels</span>
+          <span class="chip">Helps lock profits on spikes</span>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        All numbers are approximate helpers. Always double-check prices & quantities
+        in your bank app before confirming an order.
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
 </body>
 </html>
