@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Metals</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="manifest" href="manifest.json" />
+<style>
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+:root {
+  --bg: #111;
+  --text: #eee;
+}
+.light {
+  --bg: #f8f8f8;
+  --text: #222;
+}
+button {
+  padding: 10px 16px;
+  margin: 20px;
+  border-radius: 8px;
+  border: none;
+  background: #fbbf24;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+<button id="themeToggle">Toggle Dark/Light</button>
+<h1>Metals App</h1>
+<p>Your PWA shell is ready. We’ll plug in the full planner next.</p>
+
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+</body>
+</html>
